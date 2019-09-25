@@ -44,8 +44,8 @@ module Default = {
       pp_namespace,
       Record.namespace(record),
     );
-    oneline ? Format.fprintf(fmt, " ") : Format.fprintf(fmt, "@.");
-    Format.fprintf(fmt, "@[%t@]@.", msg);
+    oneline ? Format.fprintf(fmt, " @[<h>") : Format.fprintf(fmt, "@.@[");
+    Format.fprintf(fmt, "%t@]@.", msg);
   };
 };
 
