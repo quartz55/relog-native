@@ -1,0 +1,4 @@
+(executable
+  (name Console)
+  (public_name console_example.exe)
+  (libraries relog.lib))

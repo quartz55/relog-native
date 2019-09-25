@@ -1,0 +1,23 @@
+{
+  "name": "relog",
+  "version": "0.1.0",
+  "description": "Logger for reason-native",
+  "esy": {
+    "build": "dune build -p #{self.name}"
+  },
+  "scripts": {
+    "example:console": "esy x console_example.exe"
+  },
+  "dependencies": {
+    "@esy-ocaml/reason": "*",
+    "@opam/dune": "*",
+    "@opam/ptime": "0.8.5",
+    "@reason-native/pastel": "*",
+    "ocaml": "4.7.x",
+    "refmterr": "*"
+  },
+  "devDependencies": {
+    "@opam/merlin": "*"
+  },
+  "resolutions": {}
+}

@@ -1,0 +1,6 @@
+(library
+  (name Relog)
+  (public_name relog.lib)
+  (wrapped false)
+  (private_modules (:standard \ Relog))
+  (libraries pastel.lib ptime ptime.clock.os))
