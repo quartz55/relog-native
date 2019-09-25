@@ -32,43 +32,60 @@ module Default = {
     };
   };
 
-  let make = (~color=true, (), fmt, record) => {
+  let make = (~color=true, ~oneline=false, (), fmt, record) => {
     let msg = Record.msg(record);
     Format.fprintf(
       fmt,
-      "@[%a@ %a@ %a@]@.@[%t@]@.",
+      "@[%a@ %a@ %a@]",
       pp_ts,
       Record.ts(record),
       pp_level,
       Record.(color, level(record)),
       pp_namespace,
       Record.namespace(record),
-      msg,
     );
+    oneline ? Format.fprintf(fmt, " ") : Format.fprintf(fmt, "@.");
+    Format.fprintf(fmt, "@[%t@]@.", msg);
   };
 };
 
 module Json = {
-  let _opt_val_exn =
-    fun
-    | Some(v) => v
-    | None => failwith("wooooo");
-  let _opt_val_or_null =
-    fun
-    | Some(v) => "\"" ++ v ++ "\""
-    | None => "null";
-
-  let fmt = (fmt, record) => {
-    let log = Record.msg(record);
-    let ts = Record.ts(record);
-    Format.fprintf(
-      fmt,
-      {|{"level": %d, "ts": %d, "namespace": %s, "message": "%t"}@.|},
-      Level.verbosity(Record.level(record)),
-      Ptime.to_span(ts) |> Ptime.Span.to_int_s |> _opt_val_exn,
-      Record.namespace(record) |> _opt_val_or_null,
-      log,
-    );
+  let fmt = {
+    let buf = Bi_outbuf.create(512);
+    (fmt, r) => {
+      let level = Record.level(r) |> Level.verbosity;
+      let ts =
+        Record.ts(r)
+        |> Ptime.to_span
+        |> Ptime.Span.to_int_s
+        |> (
+          fun
+          | Some(ts) => ts
+          | None => failwith("change me later")
+        );
+      let ns =
+        Record.namespace(r)
+        |> (
+          fun
+          | Some(ns) => `String(ns)
+          | None => `Null
+        );
+      let msg = {
+        Format.fprintf(Format.str_formatter, "%t", Record.msg(r));
+        Format.flush_str_formatter();
+      };
+      let json =
+        Yojson.Basic.(
+          `Assoc([
+            ("level", `Int(level)),
+            ("ts", `Int(ts)),
+            ("namespace", ns),
+            ("message", `String(msg)),
+          ])
+        );
+      let out = json |> Yojson.Basic.to_string(~buf, ~std=true);
+      Format.fprintf(fmt, "%s@.", out);
+    };
   };
 };
 

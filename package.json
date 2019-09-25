@@ -14,7 +14,8 @@
     "@opam/ptime": "0.8.5",
     "@reason-native/pastel": "*",
     "ocaml": "4.7.x",
-    "refmterr": "*"
+    "refmterr": "*",
+    "@opam/yojson": "1.7.0"
   },
   "devDependencies": {
     "@opam/merlin": "*"
