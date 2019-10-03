@@ -6,25 +6,22 @@ module Sink: {
   let set: t => unit;
   let make: (Record.t => unit) => t;
 };
+module Fields = Fields;
+module Field = Field;
 
+type msgf('a) = Types.msgf('a);
+type log('a) = Types.log('a);
 type record = Record.t;
+type formatter = Formatter.t;
+type level = Level.t;
+type fields = Fields.t;
+type field = Field.t;
 
-module type LoggerS = {let namespace: option(string);};
-
-module type Logger = {
-  let namespace: option(string);
-  let trace: Types.log('a);
-  let debug: Types.log('a);
-  let dbg: Types.log('a);
-  let info: Types.log('a);
-  let warning: Types.log('a);
-  let warn: Types.log('a);
-  let error: Types.log('a);
-  let err: Types.log('a);
-};
-
-module Logger: (M: LoggerS) => Logger;
-module Clone: (L: Logger, M: LoggerS) => Logger;
-
-let logger: (~namespace: string=?, unit) => (module Logger);
-let clone: (~namespace: string=?, (module Logger)) => (module Logger);
+let logger:
+  (~namespace: string=?, ~fields: list(Field.t)=?, unit) => (module Logger.S);
+let clone:
+  (~namespace: string=?, ~fields: list(Field.t)=?, (module Logger.S)) =>
+  (module Logger.S);
+let child:
+  (~namespace: string=?, ~fields: list(Field.t)=?, (module Logger.S)) =>
+  (module Logger.S);

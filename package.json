@@ -6,7 +6,7 @@
     "build": "dune build -p #{self.name}"
   },
   "scripts": {
-    "example:console": "esy x console_example.exe"
+    "example:basic": "esy x basic_example.exe"
   },
   "dependencies": {
     "@esy-ocaml/reason": "*",
