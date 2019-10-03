@@ -2,6 +2,10 @@ open Types;
 
 let now = () => Ptime_clock.now();
 
+let nop_fmt = Format.make_formatter((_, _, _) => (), () => ());
+let ignore_msgf: format4('a, Format.formatter, unit, unit) => 'a =
+  msgf => Format.ifprintf(nop_fmt, msgf);
+
 type t = {
   ts: Ptime.t,
   level: Level.t,
@@ -26,16 +30,16 @@ let make:
     {
       ts,
       level,
-      msgf: fmt =>
-        msgf((~fields=?, msg) => {Format.fprintf(fmt, msg) |> ignore}),
+      msgf: fmt => msgf((~fields=?, msg) => {Format.fprintf(fmt, msg)}),
       get_msg_fields: () => {
         let t = ref(Fields.empty);
-        msgf((~fields=?, _) =>
+        msgf((~fields=?, msgf) => {
           switch (fields) {
           | None => ()
           | Some(f) => t := Fields.of_list(f)
-          }
-        );
+          };
+          ignore_msgf(msgf);
+        });
         t^;
       },
       m_fields: fields,

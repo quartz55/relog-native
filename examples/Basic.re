@@ -9,7 +9,7 @@ module L = (
 );
 module L2 = (
   val Relog.clone(
-        ~namespace="child",
+        ~namespace="Child",
         ~fields=[F.Int.("pid" <=> 1342)],
         (module L),
       )
@@ -38,11 +38,11 @@ setup_logging();
 L.trace(m => m("trace", ~fields=[F.str("new", "key")]));
 L.debug(m => m("debug", ~fields=[F.String.f("overwrite", "meeee")]));
 L.info(m => m("info", ~fields=[F.Int.("pid" <=> 2)]));
-L.warn(m => m("warn"));
-L.error(m => m("error"));
+L.warn(m => m("warn %d", 1));
+L.error(m => m("error @[<v 2>let inc x =@ x + 1@]"));
 
 L2.trace(m => m("trace"));
 L2.debug(m => m("debug"));
 L2.info(m => m("info"));
-L2.warn(m => m("warn"));
+L2.warn(m => m("warn %d", 2));
 L2.error(m => m("error"));
