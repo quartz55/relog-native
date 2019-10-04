@@ -75,6 +75,26 @@ module List =
     type t = list(json);
     let to_json = x => `List(x);
   });
+module IntList =
+  Make({
+    type t = list(int);
+    let to_json = x => `List(x |> CCList.map(v => `Int(v)));
+  });
+module FloatList =
+  Make({
+    type t = list(float);
+    let to_json = x => `List(x |> CCList.map(v => `Float(v)));
+  });
+module StrList =
+  Make({
+    type t = list(string);
+    let to_json = x => `List(x |> CCList.map(v => `String(v)));
+  });
+module BoolList =
+  Make({
+    type t = list(bool);
+    let to_json = x => `List(x |> CCList.map(v => `Bool(v)));
+  });
 
 module Assoc =
   Make({

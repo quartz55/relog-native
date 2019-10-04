@@ -1,4 +1,4 @@
-(executable
-  (name Basic)
-  (public_name basic_example.exe)
+(executables
+  (names Basic Async)
+  (public_names basic_example.exe async_example.exe)
   (libraries relog.lib))

@@ -37,6 +37,10 @@ module Float: CONVERTER with type src := float;
 module String: CONVERTER with type src := string;
 module Bool: CONVERTER with type src := bool;
 module List: CONVERTER with type src := list(json);
+module IntList: CONVERTER with type src := list(int);
+module FloatList: CONVERTER with type src := list(float);
+module StrList: CONVERTER with type src := list(string);
+module BoolList: CONVERTER with type src := list(bool);
 module Assoc: CONVERTER with type src := list((string, json));
 
 let null: (string, unit) => t;

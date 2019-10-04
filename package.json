@@ -6,16 +6,18 @@
     "build": "dune build -p #{self.name}"
   },
   "scripts": {
-    "example:basic": "esy x basic_example.exe"
+    "example:basic": "esy x basic_example.exe",
+    "example:async": "esy x async_example.exe"
   },
   "dependencies": {
     "@esy-ocaml/reason": "*",
+    "@opam/containers": "2.6.1",
     "@opam/dune": "*",
     "@opam/ptime": "0.8.5",
+    "@opam/yojson": "1.7.0",
     "@reason-native/pastel": "*",
     "ocaml": "4.7.x",
-    "refmterr": "*",
-    "@opam/yojson": "1.7.0"
+    "refmterr": "*"
   },
   "devDependencies": {
     "@opam/merlin": "*"

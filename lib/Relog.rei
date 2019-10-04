@@ -5,6 +5,7 @@ module Sink: {
   type t;
   let set: t => unit;
   let make: (Record.t => unit) => t;
+  let make_async: (Record.t => unit) => t;
 };
 module Fields = Fields;
 module Field = Field;

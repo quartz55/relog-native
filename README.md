@@ -5,10 +5,11 @@
 - [x] Interface files
 - [x] Custom tags support (KV/structured logging)
 - [ ] Refactor namespacing
-- [ ] Examples
+- [x] Examples
 - [ ] Documentation
-- [ ] Async support
+- [x] Async support
 - [ ] Various utilities
   - [ ] Rotating log file
   - [ ] Syslog support (?)
 - [ ] PPX (?)
+- [ ] Lwt and JaneStreet Async support (?)
