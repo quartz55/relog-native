@@ -36,8 +36,12 @@ let setup_logging = () => {
 setup_logging();
 
 L.trace(m => m("trace", ~fields=[F.str("new", "key")]));
-L.debug(m => m("debug", ~fields=[F.String.f("overwrite", "meeee")]));
-L.info(m => m("info", ~fields=[F.Int.("pid" <=> 2)]));
+L.debug(m =>
+  m("debug", ~fields=[F.IntList.f("counters", [1, 2, 3, 4, 5])])
+);
+L.info(m =>
+  m("info", ~fields=[F.String.f("overwrite", "meeee"), F.Int.("pid" <=> 2)])
+);
 L.warn(m => m("warn %d", 1));
 L.error(m => m("error @[<v 2>let inc x =@ x + 1@]"));
 

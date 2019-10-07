@@ -33,16 +33,19 @@ module Default = {
   };
   let pp_json = (fmt, json) =>
     Format.fprintf(fmt, "%s", Yojson.Basic.to_string(json));
-  let pp_field = (fmt, (key, field)) => {
-    Format.fprintf(fmt, "@[%s=%a@]", key, pp_json, field);
-  };
   let pp_fields = (fmt, fields) => {
+    let rec pp' = curr =>
+      switch (curr) {
+      | Seq.Nil => ()
+      | Seq.Cons(f, next) =>
+        let (key, value) = Field.(key(f), value(f));
+        Format.fprintf(fmt, "@[\"%s\"=%a@]", key, pp_json, value);
+        let next = next();
+        next != Seq.Nil ? Format.pp_print_space(fmt, ()) : ();
+        pp'(next);
+      };
     Format.pp_open_hbox(fmt, ());
-    fields
-    |> Fields.iter(f => {
-         pp_field(fmt, Field.(key(f), value(f)));
-         Format.pp_print_space(fmt, ());
-       });
+    pp'(Fields.to_seq(fields, ()));
     Format.pp_close_box(fmt, ());
   };
 
@@ -60,8 +63,8 @@ module Default = {
       Record.namespace(record),
     );
     oneline
-      ? Format.fprintf(fmt, " @[<h>@[%t@]%a@]", msg, pp_fields, fields)
-      : Format.fprintf(fmt, " @[<h>%a@]@.@[%t@]", pp_fields, fields, msg);
+      ? Format.fprintf(fmt, " @[<h>@[%t@] (%a)@]", msg, pp_fields, fields)
+      : Format.fprintf(fmt, " @[<h>(%a)@]@.@[%t@]", pp_fields, fields, msg);
     Format.fprintf(fmt, "@.");
   };
 };
