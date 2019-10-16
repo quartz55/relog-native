@@ -63,7 +63,7 @@ module Default = {
       Record.namespace(record),
     );
     oneline
-      ? Format.fprintf(fmt, " @[<h>@[%t@] (%a)@]", msg, pp_fields, fields)
+      ? Format.fprintf(fmt, " @[<h>(%a) @[%t@]@]", pp_fields, fields, msg)
       : Format.fprintf(fmt, " @[<h>(%a)@]@.@[%t@]", pp_fields, fields, msg);
     Format.fprintf(fmt, "@.");
   };

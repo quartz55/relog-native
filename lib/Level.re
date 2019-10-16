@@ -14,7 +14,7 @@ let verbosity =
   | Error => 1;
 
 let compare = (lhs, rhs) =>
-  Pervasives.compare(verbosity(lhs), verbosity(rhs));
+  Stdlib.compare(verbosity(lhs), verbosity(rhs));
 let equal = (l, r) => compare(l, r) == 0;
 
 module Infix = {

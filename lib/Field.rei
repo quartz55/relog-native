@@ -23,9 +23,13 @@ module type JsonType = {
   let to_json: t => json;
 };
 
+module type T = { type t; };
+
 module type CONVERTER = {
   type src;
+  module Types: T with type t = src;
   let f: (string, src) => t;
+  let v: src => json;
   module Infix: {let (<=>): (string, src) => t;};
   let (<=>): (string, src) => t;
 };
@@ -42,6 +46,11 @@ module FloatList: CONVERTER with type src := list(float);
 module StrList: CONVERTER with type src := list(string);
 module BoolList: CONVERTER with type src := list(bool);
 module Assoc: CONVERTER with type src := list((string, json));
+module Lazy: CONVERTER with type src := unit => json;
+module LazyInt: CONVERTER with type src := unit => int;
+module LazyFloat: CONVERTER with type src := unit => float;
+module LazyStr: CONVERTER with type src := unit => string;
+module LazyBool: CONVERTER with type src := unit => bool;
 
 let null: (string, unit) => t;
 let int: (string, int) => t;
@@ -55,3 +64,8 @@ let float_list: (string, list(float)) => t;
 let str_list: (string, list(string)) => t;
 let bool_list: (string, list(bool)) => t;
 let assoc: (string, list((string, json))) => t;
+let lazy_: (string, unit => json) => t;
+let lazy_int: (string, unit => int) => t;
+let lazy_float: (string, unit => float) => t;
+let lazy_str: (string, unit => string) => t;
+let lazy_bool: (string, unit => bool) => t;

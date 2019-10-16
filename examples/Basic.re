@@ -3,7 +3,7 @@ module F = Relog.Field;
 module L = (
   val Relog.logger(
         ~namespace=__MODULE__,
-        ~fields=[F.String.("overwrite" <=> "me")],
+        ~fields=[F.String.("overwrite" <=> "me"), F.LazyInt.("computed_pid" <=> () => Unix.getpid())],
         (),
       )
 );
@@ -17,7 +17,7 @@ module L2 = (
 
 let setup_logging = () => {
   let json_fmter = Relog.Formatter.json();
-  let cli_fmter = Relog.Formatter.default(~color=true, ());
+  let cli_fmter = Relog.Formatter.default(~color=true, ~oneline=true, ());
 
   let file_oc = open_out("json-ex.log");
   let cli_fmt = Format.std_formatter;

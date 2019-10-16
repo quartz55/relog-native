@@ -24,16 +24,24 @@ module type JsonType = {
   let to_json: t => json;
 };
 
+module type T = { type t; };
+
 module type CONVERTER = {
   type src;
+  module Types: T with type t = src;
   let f: (string, src) => t;
+  let v: src => json;
   module Infix: {let (<=>): (string, src) => t;};
   let (<=>): (string, src) => t;
 };
 
 module Make = (M: JsonType) : (CONVERTER with type src := M.t) => {
   type src = M.t;
-  let f = (k, v) => Field(k, M.to_json(v));
+  module Types = {
+    type t = M.t;
+  };
+  let v = M.to_json;
+  let f = (k, v_) => Field(k, v(v_));
   module Infix = {
     let (<=>) = f;
   };
@@ -75,32 +83,38 @@ module List =
     type t = list(json);
     let to_json = x => `List(x);
   });
-module IntList =
-  Make({
-    type t = list(int);
-    let to_json = x => `List(x |> CCList.map(v => `Int(v)));
-  });
-module FloatList =
-  Make({
-    type t = list(float);
-    let to_json = x => `List(x |> CCList.map(v => `Float(v)));
-  });
-module StrList =
-  Make({
-    type t = list(string);
-    let to_json = x => `List(x |> CCList.map(v => `String(v)));
-  });
-module BoolList =
-  Make({
-    type t = list(bool);
-    let to_json = x => `List(x |> CCList.map(v => `Bool(v)));
-  });
+module MakeList = (T: T, M: (CONVERTER with type src := T.t)): (CONVERTER with type src := list(M.Types.t)) => {
+  include Make({
+    type t = list(M.Types.t);
+    let to_json = x => List.v(CCList.map(M.v, x));
+  })
+};
+module IntList = MakeList({type t = int}, Int);
+module FloatList = MakeList({type t = float}, Float);
+module StrList = MakeList({type t = string}, String);
+module BoolList = MakeList({type t = bool}, Bool);
 
 module Assoc =
   Make({
     type t = list((string, json));
     let to_json = x => `Assoc(x);
   });
+
+module Lazy =
+  Make({
+    type t = unit => json;
+    let to_json = f => f();
+  });
+module MakeLazy = (T: T, M: (CONVERTER with type src := T.t)): (CONVERTER with type src := unit => M.Types.t) => {
+  include Make({
+    type t = unit => M.Types.t;
+    let to_json = f => M.v(f());
+  })
+};
+module LazyInt = MakeLazy({type t = int}, Int);
+module LazyFloat = MakeLazy({type t = float}, Float);
+module LazyStr = MakeLazy({type t = string}, String);
+module LazyBool = MakeLazy({type t = bool}, Bool);
 
 let null = Null.f;
 let int = Int.f;
@@ -114,3 +128,8 @@ let float_list = FloatList.f;
 let str_list = StrList.f;
 let bool_list = BoolList.f;
 let assoc = Assoc.f;
+let lazy_ = Lazy.f;
+let lazy_int = LazyInt.f;
+let lazy_float = LazyFloat.f;
+let lazy_str = LazyStr.f;
+let lazy_bool = LazyBool.f;
