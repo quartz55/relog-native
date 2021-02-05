@@ -11,16 +11,17 @@
   },
   "dependencies": {
     "@esy-ocaml/reason": "*",
-    "@opam/containers": "2.6.1",
-    "@opam/dune": "*",
+    "@opam/containers": "3.2",
+    "@opam/dune": ">=2.8",
     "@opam/ptime": "0.8.5",
     "@opam/yojson": "1.7.0",
     "@reason-native/pastel": "*",
-    "ocaml": "<4.9.x",
+    "ocaml": "~4.10.x",
     "refmterr": "*"
   },
   "devDependencies": {
-    "@opam/merlin": "*"
+    "@opam/merlin": "*",
+    "@opam/odoc": "*"
   },
   "resolutions": {}
 }
