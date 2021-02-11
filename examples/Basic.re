@@ -3,7 +3,10 @@ module F = Relog.Field;
 module L = (
   val Relog.logger(
         ~namespace=__MODULE__,
-        ~fields=[F.String.("overwrite" <=> "me"), F.LazyInt.("computed_pid" <=> () => Unix.getpid())],
+        ~fields=[
+          F.String.("overwrite" <=> "me"),
+          F.LazyInt.("computed_random_int" <=> (() => Random.int(9001))),
+        ],
         (),
       )
 );

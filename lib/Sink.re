@@ -19,7 +19,7 @@ let make = h => h;
 let make_async = h => {
   let rec child_loop = rx => {
     switch (Marshal.from_channel(rx)) {
-    | (record: Record.t) =>
+    | record =>
       h(record);
       child_loop(rx);
     | exception End_of_file => () //print_endline("ASYNC_LOG rx closed")
