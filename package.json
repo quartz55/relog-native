@@ -16,12 +16,13 @@
     "@opam/ptime": "0.8.5",
     "@opam/yojson": "1.7.0",
     "@reason-native/pastel": "*",
-    "ocaml": "~4.10.x",
-    "refmterr": "*"
+    "ocaml": ">4.8.x"
   },
   "devDependencies": {
     "@opam/merlin": "*",
     "@opam/odoc": "*"
   },
-  "resolutions": {}
+  "resolutions": {
+    "@esy-ocaml/reason": "reasonml/reason:reason.json#98e6c29"
+  }
 }
