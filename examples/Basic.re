@@ -23,7 +23,7 @@ let setup_logging = () => {
   let cli_fmter = Relog.Formatter.default(~color=true, ~oneline=true, ());
 
   let file_oc = open_out("json-ex.log");
-  let cli_fmt = Format.std_formatter;
+  let cli_fmt = Format.formatter_of_out_channel(stderr);
   let json_fmt = Format.formatter_of_out_channel(file_oc);
 
   let sink =

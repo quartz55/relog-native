@@ -5,25 +5,16 @@ module Default = {
     let tz_offset_s = Ptime_clock.current_tz_offset_s();
     Ptime.pp_rfc3339(~tz_offset_s?, ());
   };
-  let pp_level = (fmt, (color, level)) => {
-    let colorize = (level, str) => {
-      let color =
-        switch (level) {
-        | Level.Error => Pastel.Red
-        | Warn => Pastel.Yellow
-        | Info => Pastel.Green
-        | Debug => Pastel.Blue
-        | Trace => Pastel.BlackBright
-        };
-      <Pastel color> str </Pastel>;
-    };
-    let level_fmt =
-      level
-      |> Level.to_string
-      |> String.uppercase_ascii
-      |> Printf.sprintf("%-5s")
-      |> (color ? colorize(level) : (v => v));
-    Format.fprintf(fmt, "[%s]", level_fmt);
+  let color_of_level =
+    fun
+    | Level.Error => "red"
+    | Warn => "yellow"
+    | Info => "green"
+    | Debug => "blue"
+    | Trace => "Black";
+  let pp_level = (fmt, level) => {
+    let pp = (fmt, level) => CCFormat.with_colorf(color_of_level(level), fmt, "%-5s", level |> Level.to_string |> String.uppercase_ascii);
+    Format.fprintf(fmt, "[%a]", pp, level);
   };
   let pp_namespace = (fmt, ns) => {
     switch (ns) {
@@ -50,6 +41,10 @@ module Default = {
   };
 
   let make = (~color=true, ~oneline=false, (), fmt, record) => {
+    if (color) {
+      CCFormat.set_color_default(true);
+      CCFormat.set_color_tag_handling(fmt);
+    };
     let msg = Record.msg(record);
     let fields = Record.fields(record);
     Format.fprintf(
@@ -58,7 +53,7 @@ module Default = {
       pp_ts,
       Record.ts(record),
       pp_level,
-      Record.(color, level(record)),
+      Record.level(record),
       pp_namespace,
       Record.namespace(record),
     );

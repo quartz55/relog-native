@@ -10,7 +10,7 @@ module L = (
 
 let setup_logging = () => {
   let cli_fmter = Relog.Formatter.default(~color=true, ());
-  let cli_fmt = Format.std_formatter;
+  let cli_fmt = Format.formatter_of_out_channel(stderr);
 
   let sink =
     Relog.Sink.make_async(record => {

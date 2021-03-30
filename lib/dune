@@ -1,5 +1,5 @@
 (library
-  (name Relog)
-  (public_name relog.lib)
-  (wrapped true)
-  (libraries pastel.lib ptime ptime.clock.os yojson containers))
+ (name Relog)
+ (public_name relog.lib)
+ (wrapped true)
+ (libraries unix ptime ptime.clock.os yojson containers))

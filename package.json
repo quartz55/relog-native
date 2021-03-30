@@ -10,19 +10,15 @@
     "example:async": "esy x async_example.exe"
   },
   "dependencies": {
-    "@esy-ocaml/reason": "*",
+    "@opam/reason": "*",
     "@opam/containers": "3.2",
     "@opam/dune": ">=2.8",
     "@opam/ptime": "0.8.5",
     "@opam/yojson": "1.7.0",
-    "@reason-native/pastel": "*",
     "ocaml": ">4.8.x"
   },
   "devDependencies": {
     "@opam/merlin": "*",
     "@opam/odoc": "*"
-  },
-  "resolutions": {
-    "@esy-ocaml/reason": "reasonml/reason:reason.json#98e6c29"
   }
 }
