@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@opam/reason": "*",
-    "@opam/containers": "3.2",
+    "@opam/containers": "~3.2",
     "@opam/dune": ">=2.8",
-    "@opam/ptime": "0.8.5",
-    "@opam/yojson": "1.7.0",
+    "@opam/ptime": "~0.8.5",
+    "@opam/yojson": "~1.7.0",
     "ocaml": ">4.8.x"
   },
   "devDependencies": {
