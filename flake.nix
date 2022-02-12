@@ -14,7 +14,7 @@
         esy = pkgs.writeShellScriptBin "esy" "${pkgs.nodePackages.esy}/lib/node_modules/.bin/esy $@";
       in
       rec {
-        packages ={
+        packages = {
           relog = pkgs.callPackage ./. { inherit pkgs; };
         };
         defaultPackage = packages.relog;

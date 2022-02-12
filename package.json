@@ -6,19 +6,19 @@
     "build": "dune build -p #{self.name}"
   },
   "scripts": {
-    "example:basic": "esy x basic_example.exe",
-    "example:async": "esy x async_example.exe"
+    "example:basic": "esy x basic_example.exe"
   },
   "dependencies": {
-    "@opam/reason": "*",
+    "@opam/reason": "^3.7.0",
     "@opam/containers": "~3.2",
     "@opam/dune": ">=2.8",
     "@opam/ptime": "~0.8.5",
     "@opam/yojson": "~1.7.0",
-    "ocaml": ">4.8.x"
+    "ocaml": "~4.12.0"
   },
   "devDependencies": {
     "@opam/merlin": "*",
-    "@opam/odoc": "*"
+    "@opam/odoc": "*",
+    "@opam/ocaml-lsp-server": "1.9.0"
   }
 }
